@@ -16,7 +16,7 @@ Note: the agent can not assume anything about the environment.
 The agent faces with deterministic and probabilistic domains, domains with multiple goals and even with revealed features of the environment. This agent uses the `fast-downward planner` that uses domain-independent planning heuristics and able to solve a variety of domains. The agent plan it's path by using the planner and replan if needed. The idea behind it is that most of the "wrong" actions can be fixed and the agent can return to the "right path" easily.
 
 
-#### Agent Action Method:
+## Agent Action Method:
 As mentioned, the agent uses the `fast-downward planner` which can solve many tasks in a spesific format. In order to do so, the agent distinguishes between deterministic and probabilistic domains. It sends the planner new domain and problem files and change the effects of the actions if necessary. 
 
 The agent opens/create a file in which it saves all the data it learns. The agent maintain a dictionary that the keys are the locations in the maze and the value is another dictionay. The keys of the sub-dicionary is the possible actions in each location and the values are the Q-Value calculated based on the formula:
