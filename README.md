@@ -11,13 +11,17 @@ General agent that operates in multiple domains and carries on a variety of task
 5. [Installation](#installation)
 
 ## Introduction
-The agent receive a domain description and task description in PDDL and to solve the task as fast as possible. 
+The agent receive a domain description and task description in PDDL and it's goal is to solve the task as fast as possible. 
 Note: the agent can not assume anything about the environment.
 The agent faces with deterministic and probabilistic domains, domains with multiple goals and even with revealed features of the environment. This agent uses the `fast-downward planner` that uses domain-independent planning heuristics and able to solve a variety of domains. The agent plan it's path by using the planner and replan if needed. The idea behind it is that most of the "wrong" actions can be fixed and the agent can return to the "right path" easily.
 
 
 ## Agent Action Method:
-As mentioned, the agent uses the `fast-downward planner` which can solve many tasks in a spesific format. In order to do so, the agent distinguishes between deterministic and probabilistic domains. It sends the planner new domain and problem files and change the effects of the actions if necessary. 
+As mentioned, the agent uses the `fast-downward planner` which can solve many tasks in a spesific format. In order to do so, the agent distinguishes between deterministic and probabilistic domains. It sends the planner new domain and problem files and change the effects of the actions if necessary to the effect with the highest probabilistic. 
+In order to find hidden objects, the agent uses a parser and run the planner with a problem fine in which the goal is the condition that reveal the object. We assume that the hidden object is necessary to reach the goal and there exist only one hidden object.
+
+The agent writes the planner's output to a file and read the actions the planner did from it. The agent act by this chart:
+![Chart](https://pdf.ac/Kuyc1)
 
 The agent opens/create a file in which it saves all the data it learns. The agent maintain a dictionary that the keys are the locations in the maze and the value is another dictionay. The keys of the sub-dicionary is the possible actions in each location and the values are the Q-Value calculated based on the formula:
 
