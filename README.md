@@ -23,37 +23,55 @@ In order to find hidden objects, the agent uses a parser and run the planner wit
 The agent writes the planner's output to a file and read the actions the planner did from it. The agent act by this chart:
 ![Chart](https://pdf.ac/Kuyc1)
 
-The agent opens/create a file in which it saves all the data it learns. The agent maintain a dictionary that the keys are the locations in the maze and the value is another dictionay. The keys of the sub-dicionary is the possible actions in each location and the values are the Q-Value calculated based on the formula:
+The agent saves a list of all the actions in the planner's output file and work by it: the agent tries the next action on the list, if succeeded the agent repeats to try the next action until it reaches the goal. Otherwise, `current_state != expected_state`, i.e., the action that the planner did at this point led to anouther state from the state that reached by the action that the agent did, the agent replan.
 
-<div align="center"> <em> Q(s,a) = Q(s,a) + learning_rate * [reward + discaunt_factor * Q(current_location, max_possible_action) - Q(s,a)] </em> </div><br/>
+#### Replan
+The agent runs the planner again while choosing the effect of any probabilistic action in random and changing the initial state to the current state.
 
-At the function ```next_action()```, the agent updates the q-table according to the formula above. Then, in order to balance exploration and exploitation I chose to implement the agent to use Epsilon-Greedy - with a probability of 0.9 the agent picks the the max action in the q-table and with probability of 0.1 the agent picks a random action.
+### Learning:
+The fast-downward planner uses a search algorithm in order to complete the task. It can recive as an argument the search algorithm, `a-star` or `lazy-greedy` for example. 
+Every time that the agent runs the planner, it chooses an algorithm that it never ran before. 
+The agent opens/create a file for each domain in which it saves all the data it learns. The agent maintain a dictionary that the keys are the problem name and the value is a list with 3 elements: 
+   1. A list of all the action that the agent made on the best execution.
+   2. The search algorithm on the best execution.
+   3. All algorithms that the agent ran.
 
-##### Rewards
-A big part of rainforsment learning is to chose the reward to each action. The ```get_rward()``` function works by this policy:
-* If the agent is in the food location, the reward is _1000_.
-* If it is a location the agent has already have been, the reward is _-1 * the number of times it visits this location_
-* Any other case, the rears is _-1_.
+### Execution:
+If the domain or problem has never learned before, the agent will proccess the learning phase. Otherwise, it chooses the best algorithm it knows and tries to follow the actions one by one to reach the goal. If at some point the `current_state != expected_state` the agent will replan again by the best algorithm it knows. 
 
-#### LearningPolicyExecutor:
-This agent can executed only **after** a the Q-LearningExecutor. It choses the max action in each state, avoides infinity loops and also use the Epsilon-Greedy Action Selection. 
+## Fast-Downward Planner:
+"Fast Downward is a classical planning system based on heuristic search. It
+can deal with general deterministic planning problems encoded in the proposi-
+tional fragment of PDDL2.2, including advanced features like ADL conditions
+and effects and derived predicates (axioms). Like other well-known planners
+such as HSP and FF, Fast Downward is a progression planner, searching the
+space of world states of a planning task in the forward direction. However,
+unlike other PDDL planning systems, Fast Downward does not use the propo-
+sitional PDDL representation of a planning task directly. Instead, the input
+is first translated into an alternative representation called multivalued planning
+tasks, which makes many of the implicit constraints of a propositional planning
+task explicit. Exploiting this alternative representation, Fast Downward uses
+hierarchical decompositions of planning tasks for computing its heuristic func-
+tion, called the causal graph heuristic, which is very different from traditional
+HSP-like heuristics based on ignoring negative interactions of operators." [Malte Helmert]
 
-You can see more information about the learning process [here]().
+For more informain you can read Helmert [article](https://arxiv.org/pdf/1109.6051.pdf) or see the Git [main repository](https://github.com/aibasel/downward).  
+
 
 ## Dependencies:
 * Ubuntu16 O.S
 * python 2.7.18
 * pddlsim (more info [here](https://bitbucket.org/galk-opensource/executionsimulation/src/master/))
+* Fast-Downward Planner (follow the installation instuction bellow).
 
 ## Installation:
 1. Clone the repository:  
     ```
-    $ git clone https://github.com/amit164/ex4-Intro-to-Intelligent-Systems.git
+    $ git clone https://github.com/amit164/General-Agent.git
     ```
-2. Write those commands in the terminal:
+1. Write this command in the terminal:
     ```
-    $ cd ex4-Intro-to-Intelligent-Systems
-    $ python my_executive <flag> <domain_file> <problem_file> <POLICYFILE>
+    $ cd General-Agent
     ```
     > _flag_ is for running the Q-LearningExecutor (-L) or the LearningPolicyExecutor (-E). 
     
@@ -63,4 +81,15 @@ You can see more information about the learning process [here]().
     
     > _POLICYFILE_ is the file name in which the agent will save the best policy.
    
+
+If you already have the Fast-Downward planner in a directory called `dwonward` you can skeep to step 4.
+1. Clone the repository:  
+    ```
+    $ git clone https://github.com/aibasel/downward.git downward
+    ```
+2. Write those commands in the terminal:
+    ```
+    $ cd dwonward
+    $ ./build.py
+    ```
 
