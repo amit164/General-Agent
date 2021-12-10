@@ -1,3 +1,4 @@
+
 # General-Agent
 
 General agent that operates in multiple domains and carries on a variety of tasks in these domains.
@@ -18,7 +19,7 @@ The agent faces with deterministic and probabilistic domains, domains with multi
 
 ## Agent Action Method:
 As mentioned, the agent uses the `fast-downward planner` which can solve many tasks in a spesific format. In order to do so, the agent distinguishes between deterministic and probabilistic domains. It sends the planner new domain and problem files and change the effects of the actions if necessary to the effect with the highest probabilistic. 
-In order to find hidden objects, the agent uses a parser and run the planner with a problem fine in which the goal is the condition that reveal the object. We assume that the hidden object is necessary to reach the goal and there exist only one hidden object.
+In order to find hidden objects, the agent uses a parser and run the planner with a problem file in which the goal is the condition that reveal the object. We assume that the hidden object is necessary to reach the goal and there exist only one hidden object.
 
 The agent writes the planner's output to a file and read the actions the planner did from it. The agent act by this chart:
 ![Chart](https://pdf.ac/Kuyc1)
@@ -69,27 +70,28 @@ For more informain you can read Helmert [article](https://arxiv.org/pdf/1109.605
     ```
     $ git clone https://github.com/amit164/General-Agent.git
     ```
-1. Write this command in the terminal:
+2. Write this command in the terminal:
     ```
     $ cd General-Agent
-    ```
-    > _flag_ is for running the Q-LearningExecutor (-L) or the LearningPolicyExecutor (-E). 
-    
-    > _domain_file_ is the domain uploaded here (maze_domain_multi_effect_food.pddl).
- 
-    > _problem_file_ is a problem file for the domain you chose. You can use one of those here or create one of your own.
-    
-    > _POLICYFILE_ is the file name in which the agent will save the best policy.
-   
+    ```   
 
-If you already have the Fast-Downward planner in a directory called `dwonward` you can skeep to step 4.
-1. Clone the repository:  
+	If you already have the Fast-Downward planner in a directory called `General-Agent/dwonward` you can skip to step 4.
+3. Clone the repository:  
     ```
     $ git clone https://github.com/aibasel/downward.git downward
     ```
-2. Write those commands in the terminal:
+4. Write those commands in the terminal:
     ```
     $ cd dwonward
     $ ./build.py
     ```
+5. Run the agent:
+    ```
+    $ python my_executive.py -flag <domain_file> <problem_file>
+    ```
+     > You can use the ``-L`` _flag_ for running the Learning Phase or the ``-E`` _flag_ for running the Execution Phase. 
+    
+    > _domain_file_ is a path to a domain file (e.g. ``rover_domain.pddl`` which you can find in the main folder).
+ 
+    >  _problem_file_ is a path to a problem file (e.g. ``rover_problem.pddl`` which you can find in the main folder).
 
