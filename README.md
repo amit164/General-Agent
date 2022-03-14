@@ -22,7 +22,7 @@ As mentioned, the agent uses the `fast-downward planner` which can solve many ta
 In order to find hidden objects, the agent uses a parser and run the planner with a problem file in which the goal is the condition that reveal the object. We assume that the hidden object is necessary to reach the goal and there exist only one hidden object.
 
 The agent writes the planner's output to a file and read the actions the planner did from it. The agent act by this chart:
-![](https://github.com/amit164/General-Agent/blob/main/chart.pdf)
+![](https://github.com/amit164/General-Agent/blob/main/chart-1.png)
 
 The agent saves a list of all the actions in the planner's output file and work by it: the agent tries the next action on the list, if succeeded the agent repeats to try the next action until it reaches the goal. Otherwise, `current_state != expected_state`, i.e., the action that the planner did at this point led to anouther state from the state that reached by the action that the agent did, the agent replan.
 
